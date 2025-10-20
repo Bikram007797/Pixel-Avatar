@@ -33,6 +33,21 @@
                 opacity: .5;
             }
         }
+        /* Mobile-specific adjustments */
+        @media (max-width: 480px) {
+            .mobile-container {
+                padding: 1rem;
+            }
+            .mobile-card {
+                padding: 1.5rem;
+            }
+            .mobile-grid {
+                grid-template-columns: 1fr;
+            }
+            .mobile-stats {
+                padding: 1rem;
+            }
+        }
   </style>
 </head>
 <body>
@@ -147,50 +162,280 @@
             };
 
             const downloadCard = async () => {
+                // Create a temporary SVG element for rendering
+                const tempSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                tempSvg.setAttribute("width", "140");
+                tempSvg.setAttribute("height", "200");
+                tempSvg.setAttribute("viewBox", "0 0 140 200");
+                tempSvg.style.imageRendering = "pixelated";
+                
+                // Add all the SVG elements from the PixelAvatar
+                if (equippedHelmet && equippedHelmet.id === 'cap') {
+                    const cap = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                    cap.setAttribute("x", "56");
+                    cap.setAttribute("y", "8");
+                    cap.setAttribute("width", "28");
+                    cap.setAttribute("height", "12");
+                    cap.setAttribute("fill", "#d4af37");
+                    cap.setAttribute("rx", "2");
+                    tempSvg.appendChild(cap);
+                }
+                
+                if (equippedHelmet && equippedHelmet.id === 'army') {
+                    const helmet1 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                    helmet1.setAttribute("x", "52");
+                    helmet1.setAttribute("y", "6");
+                    helmet1.setAttribute("width", "36");
+                    helmet1.setAttribute("height", "16");
+                    helmet1.setAttribute("fill", "#4a4a4a");
+                    tempSvg.appendChild(helmet1);
+                    
+                    const helmet2 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                    helmet2.setAttribute("x", "48");
+                    helmet2.setAttribute("y", "14");
+                    helmet2.setAttribute("width", "44");
+                    helmet2.setAttribute("height", "8");
+                    helmet2.setAttribute("fill", "#4a4a4a");
+                    tempSvg.appendChild(helmet2);
+                }
+                
+                // Add the face
+                const face = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                face.setAttribute("x", "56");
+                face.setAttribute("y", "16");
+                face.setAttribute("width", "28");
+                face.setAttribute("height", "28");
+                face.setAttribute("fill", "#f4a460");
+                tempSvg.appendChild(face);
+                
+                // Add eyes
+                const eye1 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                eye1.setAttribute("x", "64");
+                eye1.setAttribute("y", "28");
+                eye1.setAttribute("width", "5");
+                eye1.setAttribute("height", "5");
+                eye1.setAttribute("fill", "#000");
+                tempSvg.appendChild(eye1);
+                
+                const eye2 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                eye2.setAttribute("x", "78");
+                eye2.setAttribute("y", "28");
+                eye2.setAttribute("width", "5");
+                eye2.setAttribute("height", "5");
+                eye2.setAttribute("fill", "#000");
+                tempSvg.appendChild(eye2);
+                
+                // Add body
+                const body = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                body.setAttribute("x", "52");
+                body.setAttribute("y", "44");
+                body.setAttribute("width", "36");
+                body.setAttribute("height", "40");
+                body.setAttribute("fill", equippedArmor ? equippedArmor.color : "#c41e3a");
+                tempSvg.appendChild(body);
+                
+                // Add vest details if equipped
+                if (equippedArmor && equippedArmor.id === 'vest') {
+                    const vest1 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                    vest1.setAttribute("x", "52");
+                    vest1.setAttribute("y", "68");
+                    vest1.setAttribute("width", "36");
+                    vest1.setAttribute("height", "4");
+                    vest1.setAttribute("fill", "#d4af37");
+                    tempSvg.appendChild(vest1);
+                    
+                    const vest2 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                    vest2.setAttribute("x", "60");
+                    vest2.setAttribute("y", "66");
+                    vest2.setAttribute("width", "4");
+                    vest2.setAttribute("height", "8");
+                    vest2.setAttribute("fill", "#d4af37");
+                    tempSvg.appendChild(vest2);
+                    
+                    const vest3 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                    vest3.setAttribute("x", "76");
+                    vest3.setAttribute("y", "66");
+                    vest3.setAttribute("width", "4");
+                    vest3.setAttribute("height", "8");
+                    vest3.setAttribute("fill", "#d4af37");
+                    tempSvg.appendChild(vest3);
+                }
+                
+                // Add arms
+                const arm1 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                arm1.setAttribute("x", "20");
+                arm1.setAttribute("y", "56");
+                arm1.setAttribute("width", "32");
+                arm1.setAttribute("height", "10");
+                arm1.setAttribute("fill", "#f4a460");
+                tempSvg.appendChild(arm1);
+                
+                const arm2 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                arm2.setAttribute("x", "88");
+                arm2.setAttribute("y", "56");
+                arm2.setAttribute("width", "32");
+                arm2.setAttribute("height", "10");
+                arm2.setAttribute("fill", "#f4a460");
+                tempSvg.appendChild(arm2);
+                
+                // Add hands
+                const hand1 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                hand1.setAttribute("x", "16");
+                hand1.setAttribute("y", "56");
+                hand1.setAttribute("width", "10");
+                hand1.setAttribute("height", "10");
+                hand1.setAttribute("fill", "#d4a574");
+                tempSvg.appendChild(hand1);
+                
+                const hand2 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                hand2.setAttribute("x", "120");
+                hand2.setAttribute("y", "56");
+                hand2.setAttribute("width", "10");
+                hand2.setAttribute("height", "10");
+                hand2.setAttribute("fill", "#d4a574");
+                tempSvg.appendChild(hand2);
+                
+                // Add legs
+                const leg1 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                leg1.setAttribute("x", "60");
+                leg1.setAttribute("y", "84");
+                leg1.setAttribute("width", "10");
+                leg1.setAttribute("height", "32");
+                leg1.setAttribute("fill", "#4a4a4a");
+                tempSvg.appendChild(leg1);
+                
+                const leg2 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                leg2.setAttribute("x", "70");
+                leg2.setAttribute("y", "84");
+                leg2.setAttribute("width", "10");
+                leg2.setAttribute("height", "32");
+                leg2.setAttribute("fill", "#4a4a4a");
+                tempSvg.appendChild(leg2);
+                
+                // Add feet
+                const foot1 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                foot1.setAttribute("x", "58");
+                foot1.setAttribute("y", "116");
+                foot1.setAttribute("width", "12");
+                foot1.setAttribute("height", "10");
+                foot1.setAttribute("fill", "#2c2c2c");
+                tempSvg.appendChild(foot1);
+                
+                const foot2 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                foot2.setAttribute("x", "70");
+                foot2.setAttribute("y", "116");
+                foot2.setAttribute("width", "12");
+                foot2.setAttribute("height", "10");
+                foot2.setAttribute("fill", "#2c2c2c");
+                tempSvg.appendChild(foot2);
+                
+                // Add weapons
+                if (equippedWeapon && equippedWeapon.id === 'sword') {
+                    const sword1 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                    sword1.setAttribute("x", "120");
+                    sword1.setAttribute("y", "40");
+                    sword1.setAttribute("width", "5");
+                    sword1.setAttribute("height", "40");
+                    sword1.setAttribute("fill", "#c0a080");
+                    tempSvg.appendChild(sword1);
+                    
+                    const sword2 = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+                    sword2.setAttribute("points", "122.5,40 118,34 127,34");
+                    sword2.setAttribute("fill", "#c0a080");
+                    tempSvg.appendChild(sword2);
+                }
+                
+                if (equippedWeapon && equippedWeapon.id === 'gun') {
+                    const gun1 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                    gun1.setAttribute("x", "118");
+                    gun1.setAttribute("y", "48");
+                    gun1.setAttribute("width", "16");
+                    gun1.setAttribute("height", "6");
+                    gun1.setAttribute("fill", "#404040");
+                    tempSvg.appendChild(gun1);
+                    
+                    const gun2 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                    gun2.setAttribute("x", "132");
+                    gun2.setAttribute("y", "50");
+                    gun2.setAttribute("width", "4");
+                    gun2.setAttribute("height", "4");
+                    gun2.setAttribute("fill", "#888");
+                    tempSvg.appendChild(gun2);
+                }
+                
+                // Create canvas for the card
                 const canvas = document.createElement('canvas');
                 canvas.width = 400;
                 canvas.height = 600;
                 const ctx = canvas.getContext('2d');
-
+                
+                // Draw background
                 const gradient = ctx.createLinearGradient(0, 0, 0, 600);
                 gradient.addColorStop(0, '#1e293b');
                 gradient.addColorStop(1, '#0f172a');
                 ctx.fillStyle = gradient;
                 ctx.fillRect(0, 0, 400, 600);
-
+                
+                // Draw border
                 ctx.strokeStyle = '#fbbf24';
                 ctx.lineWidth = 4;
                 ctx.strokeRect(10, 10, 380, 580);
-
-                const svgString = document.querySelector('svg').outerHTML;
-                const img = new Image();
+                
+                // Convert SVG to data URL
+                const svgString = new XMLSerializer().serializeToString(tempSvg);
                 const svgBlob = new Blob([svgString], { type: 'image/svg+xml' });
                 const svgUrl = URL.createObjectURL(svgBlob);
                 
+                // Create image and draw on canvas
+                const img = new Image();
                 img.onload = () => {
                     ctx.drawImage(img, 75, 50, 250, 250);
                     
+                    // Draw title
                     ctx.fillStyle = '#e0e7ff';
-                    ctx.font = 'bold 18px Arial';
-                    ctx.fillText('CHARACTER STATS', 40, 340);
-
+                    ctx.font = 'bold 20px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('PIXEL WARRIOR', 200, 320);
+                    
+                    // Draw stats
+                    ctx.font = 'bold 16px Arial';
+                    ctx.textAlign = 'left';
+                    ctx.fillStyle = '#fbbf24';
+                    ctx.fillText('CHARACTER STATS', 40, 350);
+                    
                     ctx.font = '14px Arial';
                     ctx.fillStyle = '#fbbf24';
-                    ctx.fillText(`Weapon: ${equippedWeapon?.name || 'None'}`, 40, 370);
+                    ctx.fillText(`Weapon: ${equippedWeapon?.name || 'None'}`, 40, 380);
                     
                     ctx.fillStyle = '#60a5fa';
-                    ctx.fillText(`Armor: ${equippedArmor?.name || 'None'}`, 40, 400);
-
+                    ctx.fillText(`Armor: ${equippedArmor?.name || 'None'}`, 40, 410);
+                    
                     ctx.fillStyle = '#fbbf24';
-                    ctx.fillText(`Helmet: ${equippedHelmet?.name || 'None'}`, 40, 430);
-
+                    ctx.fillText(`Helmet: ${equippedHelmet?.name || 'None'}`, 40, 440);
+                    
                     ctx.fillStyle = '#4ade80';
-                    ctx.fillText(`Power: ${powerLevel}/100`, 40, 460);
-
+                    ctx.fillText(`Power: ${powerLevel}/100`, 40, 470);
+                    
+                    // Draw power bar
+                    ctx.fillStyle = '#334155';
+                    ctx.fillRect(40, 485, 320, 20);
+                    ctx.fillStyle = '#4ade80';
+                    ctx.fillRect(40, 485, 320 * (powerLevel / 100), 20);
+                    
+                    // Draw border around power bar
+                    ctx.strokeStyle = '#fbbf24';
+                    ctx.lineWidth = 2;
+                    ctx.strokeRect(40, 485, 320, 20);
+                    
+                    // Download the image
                     const link = document.createElement('a');
-                    link.href = canvas.toDataURL();
+                    link.href = canvas.toDataURL('image/png');
                     link.download = 'pixel_warrior_card.png';
+                    document.body.appendChild(link);
                     link.click();
+                    document.body.removeChild(link);
+                    
+                    // Clean up
                     URL.revokeObjectURL(svgUrl);
                 };
                 
@@ -198,11 +443,11 @@
             };
 
             return (
-                <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 flex items-center justify-center p-4">
-                    <div className="bg-slate-800 rounded-lg shadow-2xl p-8 w-full max-w-md">
-                        <h1 className="text-3xl font-bold text-center mb-8 text-amber-400">Pixel Warrior</h1>
+                <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 flex items-center justify-center p-4 mobile-container">
+                    <div className="bg-slate-800 rounded-xl shadow-2xl p-6 w-full max-w-md mobile-card">
+                        <h1 className="text-3xl font-bold text-center mb-6 text-amber-400">Pixel Warrior</h1>
                         
-                        <div className="bg-slate-700 rounded-lg p-6 mb-8 flex justify-center border-4 border-amber-600 relative" ref={avatarRef}>
+                        <div className="bg-slate-700 rounded-lg p-4 mb-6 flex justify-center border-4 border-amber-600 relative" ref={avatarRef}>
                             <PixelAvatar 
                                 weapon={equippedWeapon} 
                                 armor={equippedArmor}
@@ -212,7 +457,7 @@
                             />
                         </div>
 
-                        <div className="bg-slate-700 rounded-lg p-4 mb-6 space-y-3">
+                        <div className="bg-slate-700 rounded-lg p-4 mb-6 space-y-3 mobile-stats">
                             <div>
                                 <p className="text-slate-300 text-sm mb-1">Weapon:</p>
                                 <p className="text-amber-400 font-bold">{equippedWeapon ? equippedWeapon.name : 'None'}</p>
@@ -240,7 +485,7 @@
                         <div className="mb-6 space-y-4">
                             <div>
                                 <p className="text-slate-300 mb-2 font-semibold text-sm">⚔️ Weapons:</p>
-                                <div className="grid grid-cols-2 gap-2">
+                                <div className="grid grid-cols-2 gap-2 mobile-grid">
                                     {items.weapons.map((item) => (
                                         <button
                                             key={item.id}
@@ -259,7 +504,7 @@
 
                             <div>
                                 <p className="text-slate-300 mb-2 font-semibold text-sm">🛡️ Body Armor:</p>
-                                <div className="grid grid-cols-2 gap-2">
+                                <div className="grid grid-cols-2 gap-2 mobile-grid">
                                     {items.armor.map((item) => (
                                         <button
                                             key={item.id}
@@ -278,7 +523,7 @@
 
                             <div>
                                 <p className="text-slate-300 mb-2 font-semibold text-sm">🎩 Helmet:</p>
-                                <div className="grid grid-cols-3 gap-2">
+                                <div className="grid grid-cols-3 gap-2 mobile-grid">
                                     {items.helmet.map((item) => (
                                         <button
                                             key={item.id}
@@ -297,7 +542,7 @@
 
                             <div>
                                 <p className="text-slate-300 mb-2 font-semibold text-sm">💊 Medical Kits:</p>
-                                <div className="grid grid-cols-2 gap-2">
+                                <div className="grid grid-cols-2 gap-2 mobile-grid">
                                     {items.medical.map((item) => (
                                         <button
                                             key={item.id}
