@@ -1,374 +1,364 @@
-import React, { useState, useRef } from 'react';
-import { Sword, Zap, Shield, Heart, Download } from 'lucide-react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Warrior Avatar</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes ping {
+            75%, 100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+        .animate-ping {
+            animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: .5;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
 
-export default function PixelWarrior() {
-  const [equippedWeapon, setEquippedWeapon] = useState(null);
-  const [equippedArmor, setEquippedArmor] = useState(null);
-  const [equippedHelmet, setEquippedHelmet] = useState(null);
-  const [selectedItem, setSelectedItem] = useState(null);
-  const [armorAnimation, setArmorAnimation] = useState(false);
-  const [healAnimation, setHealAnimation] = useState(false);
-  const [powerLevel, setPowerLevel] = useState(0);
-  const avatarRef = useRef(null);
+    <script type="text/babel">
+        const { useState, useRef } = React;
 
-  const items = {
-    weapons: [
-      { id: 'sword', name: 'Iron Sword', icon: Sword, category: 'weapon' },
-      { id: 'gun', name: 'Gun', icon: Zap, category: 'weapon' },
-    ],
-    armor: [
-      { id: 'leather', name: 'Leather Armor', icon: Shield, category: 'armor', color: '#8b6f47' },
-      { id: 'vest', name: 'Armed Vest with Belt', icon: Shield, category: 'armor', color: '#4a4a4a' },
-    ],
-    medical: [
-      { id: 'capsule', name: 'Power Capsule', icon: Heart, category: 'medical' },
-      { id: 'injection', name: 'Power Injection', icon: Zap, category: 'medical' },
-    ],
-    helmet: [
-      { id: 'none', name: 'None', icon: Shield, category: 'helmet' },
-      { id: 'cap', name: 'Plain Cap', icon: Shield, category: 'helmet' },
-      { id: 'army', name: 'Army Helmet', icon: Shield, category: 'helmet' },
-    ],
-  };
+        function PixelWarrior() {
+            const [equippedWeapon, setEquippedWeapon] = useState(null);
+            const [equippedArmor, setEquippedArmor] = useState(null);
+            const [equippedHelmet, setEquippedHelmet] = useState(null);
+            const [selectedItem, setSelectedItem] = useState(null);
+            const [armorAnimation, setArmorAnimation] = useState(false);
+            const [healAnimation, setHealAnimation] = useState(false);
+            const [powerLevel, setPowerLevel] = useState(0);
+            const avatarRef = useRef(null);
 
-  const handleUse = () => {
-    if (!selectedItem) return;
+            const items = {
+                weapons: [
+                    { id: 'sword', name: 'Iron Sword', category: 'weapon' },
+                    { id: 'gun', name: 'Gun', category: 'weapon' },
+                ],
+                armor: [
+                    { id: 'leather', name: 'Leather Armor', category: 'armor', color: '#8b6f47' },
+                    { id: 'vest', name: 'Armed Vest with Belt', category: 'armor', color: '#4a4a4a' },
+                ],
+                medical: [
+                    { id: 'capsule', name: 'Power Capsule', category: 'medical' },
+                    { id: 'injection', name: 'Power Injection', category: 'medical' },
+                ],
+                helmet: [
+                    { id: 'none', name: 'None', category: 'helmet' },
+                    { id: 'cap', name: 'Plain Cap', category: 'helmet' },
+                    { id: 'army', name: 'Army Helmet', category: 'helmet' },
+                ],
+            };
 
-    if (selectedItem.category === 'weapon') {
-      setEquippedWeapon(selectedItem);
-    } else if (selectedItem.category === 'armor') {
-      setArmorAnimation(true);
-      setEquippedArmor(selectedItem);
-      setTimeout(() => setArmorAnimation(false), 600);
-    } else if (selectedItem.category === 'medical') {
-      setHealAnimation(true);
-      setPowerLevel(Math.min(100, powerLevel + 40));
-      setTimeout(() => setHealAnimation(false), 800);
-    } else if (selectedItem.category === 'helmet') {
-      setEquippedHelmet(selectedItem.id === 'none' ? null : selectedItem);
-    }
-  };
+            const handleUse = () => {
+                if (!selectedItem) return;
 
-  const PixelAvatar = ({ weapon, armor, helmet, showArmorAnimation, showHealAnimation, power, size = 'large' }) => {
-    const sizeMap = {
-      large: { width: 140, height: 200, scale: 1 },
-      small: { width: 280, height: 400, scale: 2 },
-    };
-    const s = sizeMap[size];
+                if (selectedItem.category === 'weapon') {
+                    setEquippedWeapon(selectedItem);
+                } else if (selectedItem.category === 'armor') {
+                    setArmorAnimation(true);
+                    setEquippedArmor(selectedItem);
+                    setTimeout(() => setArmorAnimation(false), 600);
+                } else if (selectedItem.category === 'medical') {
+                    setHealAnimation(true);
+                    setPowerLevel(Math.min(100, powerLevel + 40));
+                    setTimeout(() => setHealAnimation(false), 800);
+                } else if (selectedItem.category === 'helmet') {
+                    setEquippedHelmet(selectedItem.id === 'none' ? null : selectedItem);
+                }
+            };
 
-    return (
-      <div className="relative">
-        <svg width={s.width} height={s.height} viewBox={`0 0 ${s.width / s.scale} ${s.height / s.scale}`} style={{ imageRendering: 'pixelated' }}>
-          {/* Helmet */}
-          {helmet && helmet.id === 'cap' && (
-            <rect x="56" y="8" width="28" height="12" fill="#d4af37" rx="2" />
-          )}
-          {helmet && helmet.id === 'army' && (
-            <>
-              <rect x="52" y="6" width="36" height="16" fill="#4a4a4a" />
-              <rect x="48" y="14" width="44" height="8" fill="#4a4a4a" />
-            </>
-          )}
-
-          {/* Head */}
-          <rect x="56" y="16" width="28" height="28" fill="#f4a460" />
-          {/* Eyes */}
-          <rect x="64" y="28" width="5" height="5" fill="#000" />
-          <rect x="78" y="28" width="5" height="5" fill="#000" />
-          
-          {/* Body - with armor color if equipped */}
-          <rect x="52" y="44" width="36" height="40" fill={armor ? armor.color : '#c41e3a'} />
-          
-          {/* Belt (if vest armor) */}
-          {armor && armor.id === 'vest' && (
-            <>
-              <rect x="52" y="68" width="36" height="4" fill="#d4af37" />
-              <rect x="60" y="66" width="4" height="8" fill="#d4af37" />
-              <rect x="76" y="66" width="4" height="8" fill="#d4af37" />
-            </>
-          )}
-          
-          {/* Armor overlay animation */}
-          {armor && showArmorAnimation && (
-            <>
-              <rect x="52" y="44" width="36" height="40" fill={armor.color} opacity="0.6" className="animate-pulse" />
-            </>
-          )}
-          
-          {/* Arms */}
-          <rect x="20" y="56" width="32" height="10" fill="#f4a460" />
-          <rect x="88" y="56" width="32" height="10" fill="#f4a460" />
-          
-          {/* Left hand */}
-          <rect x="16" y="56" width="10" height="10" fill="#d4a574" />
-          {/* Right hand */}
-          <rect x="120" y="56" width="10" height="10" fill="#d4a574" />
-          
-          {/* Legs */}
-          <rect x="60" y="84" width="10" height="32" fill="#4a4a4a" />
-          <rect x="70" y="84" width="10" height="32" fill="#4a4a4a" />
-          
-          {/* Feet */}
-          <rect x="58" y="116" width="12" height="10" fill="#2c2c2c" />
-          <rect x="70" y="116" width="12" height="10" fill="#2c2c2c" />
-
-          {/* Weapon in right hand */}
-          {weapon && (
-            <>
-              {weapon.id === 'sword' && (
-                <>
-                  <rect x="120" y="40" width="5" height="40" fill="#c0a080" />
-                  <polygon points="122.5,40 118,34 127,34" fill="#c0a080" />
-                </>
-              )}
-              {weapon.id === 'gun' && (
-                <>
-                  <rect x="118" y="48" width="16" height="6" fill="#404040" />
-                  <rect x="132" y="50" width="4" height="4" fill="#888" />
-                </>
-              )}
-            </>
-          )}
-        </svg>
-
-        {/* Heal animation particles */}
-        {showHealAnimation && (
-          <div className="absolute inset-0 pointer-events-none">
-            {[...Array(6)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute w-3 h-3 rounded-full bg-green-400 animate-ping"
-                style={{
-                  left: `${50 + Math.cos((i / 6) * Math.PI * 2) * 20}%`,
-                  top: `${40 + Math.sin((i / 6) * Math.PI * 2) * 20}%`,
-                  animationDelay: `${i * 0.1}s`,
-                  animationDuration: '0.8s',
-                }}
-              />
-            ))}
-          </div>
-        )}
-      </div>
-    );
-  };
-
-  const downloadCard = async () => {
-    const canvas = document.createElement('canvas');
-    canvas.width = 400;
-    canvas.height = 600;
-    const ctx = canvas.getContext('2d');
-
-    // Background
-    const gradient = ctx.createLinearGradient(0, 0, 0, 600);
-    gradient.addColorStop(0, '#1e293b');
-    gradient.addColorStop(1, '#0f172a');
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, 400, 600);
-
-    // Card border
-    ctx.strokeStyle = '#fbbf24';
-    ctx.lineWidth = 4;
-    ctx.strokeRect(10, 10, 380, 580);
-
-    // Render SVG to canvas
-    const svgString = document.querySelector('svg').outerHTML;
-    const img = new Image();
-    const svgBlob = new Blob([svgString], { type: 'image/svg+xml' });
-    const svgUrl = URL.createObjectURL(svgBlob);
-    
-    img.onload = () => {
-      ctx.drawImage(img, 75, 50, 250, 250);
-      
-      // Stats section
-      ctx.fillStyle = '#e0e7ff';
-      ctx.font = 'bold 18px Arial';
-      ctx.fillText('CHARACTER STATS', 40, 340);
-
-      ctx.font = '14px Arial';
-      ctx.fillStyle = '#fbbf24';
-      ctx.fillText(`Weapon: ${equippedWeapon?.name || 'None'}`, 40, 370);
-      
-      ctx.fillStyle = '#60a5fa';
-      ctx.fillText(`Armor: ${equippedArmor?.name || 'None'}`, 40, 400);
-
-      ctx.fillStyle = '#fbbf24';
-      ctx.fillText(`Helmet: ${equippedHelmet?.name || 'None'}`, 40, 430);
-
-      ctx.fillStyle = '#4ade80';
-      ctx.fillText(`Power: ${powerLevel}/100`, 40, 460);
-
-      // Download
-      const link = document.createElement('a');
-      link.href = canvas.toDataURL();
-      link.download = 'pixel_warrior_card.png';
-      link.click();
-      URL.revokeObjectURL(svgUrl);
-    };
-    
-    img.src = svgUrl;
-  };
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 flex items-center justify-center p-4">
-      <div className="bg-slate-800 rounded-lg shadow-2xl p-8 w-full max-w-md">
-        <h1 className="text-3xl font-bold text-center mb-8 text-amber-400">Pixel Warrior</h1>
-        
-        {/* Avatar Display */}
-        <div className="bg-slate-700 rounded-lg p-6 mb-8 flex justify-center border-4 border-amber-600 relative" ref={avatarRef}>
-          <PixelAvatar 
-            weapon={equippedWeapon} 
-            armor={equippedArmor}
-            helmet={equippedHelmet}
-            showArmorAnimation={armorAnimation}
-            showHealAnimation={healAnimation}
-            power={powerLevel}
-          />
-        </div>
-
-        {/* Status Display */}
-        <div className="bg-slate-700 rounded-lg p-4 mb-6 space-y-3">
-          <div>
-            <p className="text-slate-300 text-sm mb-1">Weapon:</p>
-            <p className="text-amber-400 font-bold">{equippedWeapon ? equippedWeapon.name : 'None'}</p>
-          </div>
-          <div>
-            <p className="text-slate-300 text-sm mb-1">Armor:</p>
-            <p className="text-blue-400 font-bold">{equippedArmor ? equippedArmor.name : 'None'}</p>
-          </div>
-          <div>
-            <p className="text-slate-300 text-sm mb-1">Helmet:</p>
-            <p className="text-purple-400 font-bold">{equippedHelmet ? equippedHelmet.name : 'None'}</p>
-          </div>
-          <div>
-            <p className="text-slate-300 text-sm mb-1">Power Level:</p>
-            <div className="w-full bg-slate-600 rounded-full h-4 overflow-hidden">
-              <div 
-                className="bg-gradient-to-r from-green-400 to-green-600 h-full transition-all duration-500"
-                style={{ width: `${powerLevel}%` }}
-              />
-            </div>
-            <p className="text-green-400 font-bold mt-1">{powerLevel}/100</p>
-          </div>
-        </div>
-
-        {/* Item Selection */}
-        <div className="mb-6 space-y-4">
-          <div>
-            <p className="text-slate-300 mb-2 font-semibold text-sm">⚔️ Weapons:</p>
-            <div className="grid grid-cols-2 gap-2">
-              {items.weapons.map((item) => {
-                const IconComponent = item.icon;
+            const PixelAvatar = ({ weapon, armor, helmet, showArmorAnimation, showHealAnimation }) => {
                 return (
-                  <button
-                    key={item.id}
-                    onClick={() => setSelectedItem(item)}
-                    className={`p-2 rounded-lg transition-all text-xs ${
-                      selectedItem?.id === item.id
-                        ? 'bg-amber-500 scale-105 shadow-lg'
-                        : 'bg-slate-600 hover:bg-slate-500'
-                    }`}
-                  >
-                    <IconComponent size={14} className="mx-auto mb-1" />
-                    <p className="text-white font-semibold text-xs">{item.name}</p>
-                  </button>
+                    <div className="relative">
+                        <svg width="140" height="200" viewBox="0 0 140 200" style={{ imageRendering: 'pixelated' }}>
+                            {helmet && helmet.id === 'cap' && (
+                                <rect x="56" y="8" width="28" height="12" fill="#d4af37" rx="2" />
+                            )}
+                            {helmet && helmet.id === 'army' && (
+                                <>
+                                    <rect x="52" y="6" width="36" height="16" fill="#4a4a4a" />
+                                    <rect x="48" y="14" width="44" height="8" fill="#4a4a4a" />
+                                </>
+                            )}
+
+                            <rect x="56" y="16" width="28" height="28" fill="#f4a460" />
+                            <rect x="64" y="28" width="5" height="5" fill="#000" />
+                            <rect x="78" y="28" width="5" height="5" fill="#000" />
+                            
+                            <rect x="52" y="44" width="36" height="40" fill={armor ? armor.color : '#c41e3a'} />
+                            
+                            {armor && armor.id === 'vest' && (
+                                <>
+                                    <rect x="52" y="68" width="36" height="4" fill="#d4af37" />
+                                    <rect x="60" y="66" width="4" height="8" fill="#d4af37" />
+                                    <rect x="76" y="66" width="4" height="8" fill="#d4af37" />
+                                </>
+                            )}
+                            
+                            {armor && showArmorAnimation && (
+                                <rect x="52" y="44" width="36" height="40" fill={armor.color} opacity="0.6" className="animate-pulse" />
+                            )}
+                            
+                            <rect x="20" y="56" width="32" height="10" fill="#f4a460" />
+                            <rect x="88" y="56" width="32" height="10" fill="#f4a460" />
+                            
+                            <rect x="16" y="56" width="10" height="10" fill="#d4a574" />
+                            <rect x="120" y="56" width="10" height="10" fill="#d4a574" />
+                            
+                            <rect x="60" y="84" width="10" height="32" fill="#4a4a4a" />
+                            <rect x="70" y="84" width="10" height="32" fill="#4a4a4a" />
+                            
+                            <rect x="58" y="116" width="12" height="10" fill="#2c2c2c" />
+                            <rect x="70" y="116" width="12" height="10" fill="#2c2c2c" />
+
+                            {weapon && weapon.id === 'sword' && (
+                                <>
+                                    <rect x="120" y="40" width="5" height="40" fill="#c0a080" />
+                                    <polygon points="122.5,40 118,34 127,34" fill="#c0a080" />
+                                </>
+                            )}
+                            {weapon && weapon.id === 'gun' && (
+                                <>
+                                    <rect x="118" y="48" width="16" height="6" fill="#404040" />
+                                    <rect x="132" y="50" width="4" height="4" fill="#888" />
+                                </>
+                            )}
+                        </svg>
+
+                        {showHealAnimation && (
+                            <div className="absolute inset-0 pointer-events-none">
+                                {[...Array(6)].map((_, i) => (
+                                    <div
+                                        key={i}
+                                        className="absolute w-3 h-3 rounded-full bg-green-400 animate-ping"
+                                        style={{
+                                            left: `${50 + Math.cos((i / 6) * Math.PI * 2) * 20}%`,
+                                            top: `${40 + Math.sin((i / 6) * Math.PI * 2) * 20}%`,
+                                            animationDelay: `${i * 0.1}s`,
+                                            animationDuration: '0.8s',
+                                        }}
+                                    />
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 );
-              })}
-            </div>
-          </div>
+            };
 
-          <div>
-            <p className="text-slate-300 mb-2 font-semibold text-sm">🛡️ Body Armor:</p>
-            <div className="grid grid-cols-2 gap-2">
-              {items.armor.map((item) => {
-                const IconComponent = item.icon;
-                return (
-                  <button
-                    key={item.id}
-                    onClick={() => setSelectedItem(item)}
-                    className={`p-2 rounded-lg transition-all text-xs ${
-                      selectedItem?.id === item.id
-                        ? 'bg-blue-500 scale-105 shadow-lg'
-                        : 'bg-slate-600 hover:bg-slate-500'
-                    }`}
-                  >
-                    <IconComponent size={14} className="mx-auto mb-1" />
-                    <p className="text-white font-semibold text-xs">{item.name}</p>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
+            const downloadCard = async () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = 400;
+                canvas.height = 600;
+                const ctx = canvas.getContext('2d');
 
-          <div>
-            <p className="text-slate-300 mb-2 font-semibold text-sm">🎩 Helmet:</p>
-            <div className="grid grid-cols-3 gap-2">
-              {items.helmet.map((item) => {
-                const IconComponent = item.icon;
-                return (
-                  <button
-                    key={item.id}
-                    onClick={() => setSelectedItem(item)}
-                    className={`p-2 rounded-lg transition-all text-xs ${
-                      selectedItem?.id === item.id
-                        ? 'bg-purple-500 scale-105 shadow-lg'
-                        : 'bg-slate-600 hover:bg-slate-500'
-                    }`}
-                  >
-                    <IconComponent size={14} className="mx-auto mb-1" />
-                    <p className="text-white font-semibold text-xs">{item.name}</p>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
+                const gradient = ctx.createLinearGradient(0, 0, 0, 600);
+                gradient.addColorStop(0, '#1e293b');
+                gradient.addColorStop(1, '#0f172a');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, 400, 600);
 
-          <div>
-            <p className="text-slate-300 mb-2 font-semibold text-sm">💊 Medical Kits:</p>
-            <div className="grid grid-cols-2 gap-2">
-              {items.medical.map((item) => {
-                const IconComponent = item.icon;
-                return (
-                  <button
-                    key={item.id}
-                    onClick={() => setSelectedItem(item)}
-                    className={`p-2 rounded-lg transition-all text-xs ${
-                      selectedItem?.id === item.id
-                        ? 'bg-green-500 scale-105 shadow-lg'
-                        : 'bg-slate-600 hover:bg-slate-500'
-                    }`}
-                  >
-                    <IconComponent size={14} className="mx-auto mb-1" />
-                    <p className="text-white font-semibold text-xs">{item.name}</p>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </div>
+                ctx.strokeStyle = '#fbbf24';
+                ctx.lineWidth = 4;
+                ctx.strokeRect(10, 10, 380, 580);
 
-        {/* Buttons */}
-        <div className="space-y-2">
-          <button
-            onClick={handleUse}
-            disabled={!selectedItem}
-            className={`w-full py-3 rounded-lg font-bold text-lg transition-all ${
-              selectedItem
-                ? 'bg-purple-500 hover:bg-purple-600 text-white cursor-pointer'
-                : 'bg-slate-600 text-slate-400 cursor-not-allowed'
-            }`}
-          >
-            USE ITEM
-          </button>
+                const svgString = document.querySelector('svg').outerHTML;
+                const img = new Image();
+                const svgBlob = new Blob([svgString], { type: 'image/svg+xml' });
+                const svgUrl = URL.createObjectURL(svgBlob);
+                
+                img.onload = () => {
+                    ctx.drawImage(img, 75, 50, 250, 250);
+                    
+                    ctx.fillStyle = '#e0e7ff';
+                    ctx.font = 'bold 18px Arial';
+                    ctx.fillText('CHARACTER STATS', 40, 340);
 
-          <button
-            onClick={downloadCard}
-            className="w-full py-3 rounded-lg font-bold text-lg bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white transition-all flex items-center justify-center gap-2"
-          >
-            <Download size={20} />
-            SAVE CARD
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
+                    ctx.font = '14px Arial';
+                    ctx.fillStyle = '#fbbf24';
+                    ctx.fillText(`Weapon: ${equippedWeapon?.name || 'None'}`, 40, 370);
+                    
+                    ctx.fillStyle = '#60a5fa';
+                    ctx.fillText(`Armor: ${equippedArmor?.name || 'None'}`, 40, 400);
+
+                    ctx.fillStyle = '#fbbf24';
+                    ctx.fillText(`Helmet: ${equippedHelmet?.name || 'None'}`, 40, 430);
+
+                    ctx.fillStyle = '#4ade80';
+                    ctx.fillText(`Power: ${powerLevel}/100`, 40, 460);
+
+                    const link = document.createElement('a');
+                    link.href = canvas.toDataURL();
+                    link.download = 'pixel_warrior_card.png';
+                    link.click();
+                    URL.revokeObjectURL(svgUrl);
+                };
+                
+                img.src = svgUrl;
+            };
+
+            return (
+                <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 flex items-center justify-center p-4">
+                    <div className="bg-slate-800 rounded-lg shadow-2xl p-8 w-full max-w-md">
+                        <h1 className="text-3xl font-bold text-center mb-8 text-amber-400">Pixel Warrior</h1>
+                        
+                        <div className="bg-slate-700 rounded-lg p-6 mb-8 flex justify-center border-4 border-amber-600 relative" ref={avatarRef}>
+                            <PixelAvatar 
+                                weapon={equippedWeapon} 
+                                armor={equippedArmor}
+                                helmet={equippedHelmet}
+                                showArmorAnimation={armorAnimation}
+                                showHealAnimation={healAnimation}
+                            />
+                        </div>
+
+                        <div className="bg-slate-700 rounded-lg p-4 mb-6 space-y-3">
+                            <div>
+                                <p className="text-slate-300 text-sm mb-1">Weapon:</p>
+                                <p className="text-amber-400 font-bold">{equippedWeapon ? equippedWeapon.name : 'None'}</p>
+                            </div>
+                            <div>
+                                <p className="text-slate-300 text-sm mb-1">Armor:</p>
+                                <p className="text-blue-400 font-bold">{equippedArmor ? equippedArmor.name : 'None'}</p>
+                            </div>
+                            <div>
+                                <p className="text-slate-300 text-sm mb-1">Helmet:</p>
+                                <p className="text-purple-400 font-bold">{equippedHelmet ? equippedHelmet.name : 'None'}</p>
+                            </div>
+                            <div>
+                                <p className="text-slate-300 text-sm mb-1">Power Level:</p>
+                                <div className="w-full bg-slate-600 rounded-full h-4 overflow-hidden">
+                                    <div 
+                                        className="bg-gradient-to-r from-green-400 to-green-600 h-full transition-all duration-500"
+                                        style={{ width: `${powerLevel}%` }}
+                                    />
+                                </div>
+                                <p className="text-green-400 font-bold mt-1">{powerLevel}/100</p>
+                            </div>
+                        </div>
+
+                        <div className="mb-6 space-y-4">
+                            <div>
+                                <p className="text-slate-300 mb-2 font-semibold text-sm">⚔️ Weapons:</p>
+                                <div className="grid grid-cols-2 gap-2">
+                                    {items.weapons.map((item) => (
+                                        <button
+                                            key={item.id}
+                                            onClick={() => setSelectedItem(item)}
+                                            className={`p-2 rounded-lg transition-all text-xs ${
+                                                selectedItem?.id === item.id
+                                                    ? 'bg-amber-500 scale-105 shadow-lg'
+                                                    : 'bg-slate-600 hover:bg-slate-500'
+                                            }`}
+                                        >
+                                            <p className="text-white font-semibold text-xs">{item.name}</p>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div>
+                                <p className="text-slate-300 mb-2 font-semibold text-sm">🛡️ Body Armor:</p>
+                                <div className="grid grid-cols-2 gap-2">
+                                    {items.armor.map((item) => (
+                                        <button
+                                            key={item.id}
+                                            onClick={() => setSelectedItem(item)}
+                                            className={`p-2 rounded-lg transition-all text-xs ${
+                                                selectedItem?.id === item.id
+                                                    ? 'bg-blue-500 scale-105 shadow-lg'
+                                                    : 'bg-slate-600 hover:bg-slate-500'
+                                            }`}
+                                        >
+                                            <p className="text-white font-semibold text-xs">{item.name}</p>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div>
+                                <p className="text-slate-300 mb-2 font-semibold text-sm">🎩 Helmet:</p>
+                                <div className="grid grid-cols-3 gap-2">
+                                    {items.helmet.map((item) => (
+                                        <button
+                                            key={item.id}
+                                            onClick={() => setSelectedItem(item)}
+                                            className={`p-2 rounded-lg transition-all text-xs ${
+                                                selectedItem?.id === item.id
+                                                    ? 'bg-purple-500 scale-105 shadow-lg'
+                                                    : 'bg-slate-600 hover:bg-slate-500'
+                                            }`}
+                                        >
+                                            <p className="text-white font-semibold text-xs">{item.name}</p>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div>
+                                <p className="text-slate-300 mb-2 font-semibold text-sm">💊 Medical Kits:</p>
+                                <div className="grid grid-cols-2 gap-2">
+                                    {items.medical.map((item) => (
+                                        <button
+                                            key={item.id}
+                                            onClick={() => setSelectedItem(item)}
+                                            className={`p-2 rounded-lg transition-all text-xs ${
+                                                selectedItem?.id === item.id
+                                                    ? 'bg-green-500 scale-105 shadow-lg'
+                                                    : 'bg-slate-600 hover:bg-slate-500'
+                                            }`}
+                                        >
+                                            <p className="text-white font-semibold text-xs">{item.name}</p>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="space-y-2">
+                            <button
+                                onClick={handleUse}
+                                disabled={!selectedItem}
+                                className={`w-full py-3 rounded-lg font-bold text-lg transition-all ${
+                                    selectedItem
+                                        ? 'bg-purple-500 hover:bg-purple-600 text-white cursor-pointer'
+                                        : 'bg-slate-600 text-slate-400 cursor-not-allowed'
+                                }`}
+                            >
+                                USE ITEM
+                            </button>
+
+                            <button
+                                onClick={downloadCard}
+                                className="w-full py-3 rounded-lg font-bold text-lg bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white transition-all flex items-center justify-center gap-2"
+                            >
+                                <span>💾</span>
+                                SAVE CARD
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<PixelWarrior />, document.getElementById('root'));
+    </script>
+</body>
+</html>
