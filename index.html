@@ -4,11 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pixel Warrior Avatar</title>
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.23.5/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
         @keyframes ping {
             75%, 100% {
                 transform: scale(2);
@@ -86,80 +90,60 @@
             };
 
             const PixelAvatar = ({ weapon, armor, helmet, showArmorAnimation, showHealAnimation }) => {
-                return (
-                    <div className="relative">
-                        <svg width="140" height="200" viewBox="0 0 140 200" style={{ imageRendering: 'pixelated' }}>
-                            {helmet && helmet.id === 'cap' && (
-                                <rect x="56" y="8" width="28" height="12" fill="#d4af37" rx="2" />
-                            )}
-                            {helmet && helmet.id === 'army' && (
-                                <>
-                                    <rect x="52" y="6" width="36" height="16" fill="#4a4a4a" />
-                                    <rect x="48" y="14" width="44" height="8" fill="#4a4a4a" />
-                                </>
-                            )}
-
-                            <rect x="56" y="16" width="28" height="28" fill="#f4a460" />
-                            <rect x="64" y="28" width="5" height="5" fill="#000" />
-                            <rect x="78" y="28" width="5" height="5" fill="#000" />
-                            
-                            <rect x="52" y="44" width="36" height="40" fill={armor ? armor.color : '#c41e3a'} />
-                            
-                            {armor && armor.id === 'vest' && (
-                                <>
-                                    <rect x="52" y="68" width="36" height="4" fill="#d4af37" />
-                                    <rect x="60" y="66" width="4" height="8" fill="#d4af37" />
-                                    <rect x="76" y="66" width="4" height="8" fill="#d4af37" />
-                                </>
-                            )}
-                            
-                            {armor && showArmorAnimation && (
-                                <rect x="52" y="44" width="36" height="40" fill={armor.color} opacity="0.6" className="animate-pulse" />
-                            )}
-                            
-                            <rect x="20" y="56" width="32" height="10" fill="#f4a460" />
-                            <rect x="88" y="56" width="32" height="10" fill="#f4a460" />
-                            
-                            <rect x="16" y="56" width="10" height="10" fill="#d4a574" />
-                            <rect x="120" y="56" width="10" height="10" fill="#d4a574" />
-                            
-                            <rect x="60" y="84" width="10" height="32" fill="#4a4a4a" />
-                            <rect x="70" y="84" width="10" height="32" fill="#4a4a4a" />
-                            
-                            <rect x="58" y="116" width="12" height="10" fill="#2c2c2c" />
-                            <rect x="70" y="116" width="12" height="10" fill="#2c2c2c" />
-
-                            {weapon && weapon.id === 'sword' && (
-                                <>
-                                    <rect x="120" y="40" width="5" height="40" fill="#c0a080" />
-                                    <polygon points="122.5,40 118,34 127,34" fill="#c0a080" />
-                                </>
-                            )}
-                            {weapon && weapon.id === 'gun' && (
-                                <>
-                                    <rect x="118" y="48" width="16" height="6" fill="#404040" />
-                                    <rect x="132" y="50" width="4" height="4" fill="#888" />
-                                </>
-                            )}
-                        </svg>
-
-                        {showHealAnimation && (
-                            <div className="absolute inset-0 pointer-events-none">
-                                {[...Array(6)].map((_, i) => (
-                                    <div
-                                        key={i}
-                                        className="absolute w-3 h-3 rounded-full bg-green-400 animate-ping"
-                                        style={{
-                                            left: `${50 + Math.cos((i / 6) * Math.PI * 2) * 20}%`,
-                                            top: `${40 + Math.sin((i / 6) * Math.PI * 2) * 20}%`,
-                                            animationDelay: `${i * 0.1}s`,
-                                            animationDuration: '0.8s',
-                                        }}
-                                    />
-                                ))}
-                            </div>
-                        )}
-                    </div>
+                return React.createElement(
+                    'div',
+                    { className: 'relative' },
+                    React.createElement(
+                        'svg',
+                        { width: 140, height: 200, viewBox: '0 0 140 200', style: { imageRendering: 'pixelated' } },
+                        helmet && helmet.id === 'cap' && React.createElement('rect', { x: 56, y: 8, width: 28, height: 12, fill: '#d4af37', rx: 2 }),
+                        helmet && helmet.id === 'army' && [
+                            React.createElement('rect', { key: 'h1', x: 52, y: 6, width: 36, height: 16, fill: '#4a4a4a' }),
+                            React.createElement('rect', { key: 'h2', x: 48, y: 14, width: 44, height: 8, fill: '#4a4a4a' })
+                        ],
+                        React.createElement('rect', { x: 56, y: 16, width: 28, height: 28, fill: '#f4a460' }),
+                        React.createElement('rect', { x: 64, y: 28, width: 5, height: 5, fill: '#000' }),
+                        React.createElement('rect', { x: 78, y: 28, width: 5, height: 5, fill: '#000' }),
+                        React.createElement('rect', { x: 52, y: 44, width: 36, height: 40, fill: armor ? armor.color : '#c41e3a' }),
+                        armor && armor.id === 'vest' && [
+                            React.createElement('rect', { key: 'b1', x: 52, y: 68, width: 36, height: 4, fill: '#d4af37' }),
+                            React.createElement('rect', { key: 'b2', x: 60, y: 66, width: 4, height: 8, fill: '#d4af37' }),
+                            React.createElement('rect', { key: 'b3', x: 76, y: 66, width: 4, height: 8, fill: '#d4af37' })
+                        ],
+                        armor && showArmorAnimation && React.createElement('rect', { x: 52, y: 44, width: 36, height: 40, fill: armor.color, opacity: 0.6, className: 'animate-pulse' }),
+                        React.createElement('rect', { x: 20, y: 56, width: 32, height: 10, fill: '#f4a460' }),
+                        React.createElement('rect', { x: 88, y: 56, width: 32, height: 10, fill: '#f4a460' }),
+                        React.createElement('rect', { x: 16, y: 56, width: 10, height: 10, fill: '#d4a574' }),
+                        React.createElement('rect', { x: 120, y: 56, width: 10, height: 10, fill: '#d4a574' }),
+                        React.createElement('rect', { x: 60, y: 84, width: 10, height: 32, fill: '#4a4a4a' }),
+                        React.createElement('rect', { x: 70, y: 84, width: 10, height: 32, fill: '#4a4a4a' }),
+                        React.createElement('rect', { x: 58, y: 116, width: 12, height: 10, fill: '#2c2c2c' }),
+                        React.createElement('rect', { x: 70, y: 116, width: 12, height: 10, fill: '#2c2c2c' }),
+                        weapon && weapon.id === 'sword' && [
+                            React.createElement('rect', { key: 'w1', x: 120, y: 40, width: 5, height: 40, fill: '#c0a080' }),
+                            React.createElement('polygon', { key: 'w2', points: '122.5,40 118,34 127,34', fill: '#c0a080' })
+                        ],
+                        weapon && weapon.id === 'gun' && [
+                            React.createElement('rect', { key: 'g1', x: 118, y: 48, width: 16, height: 6, fill: '#404040' }),
+                            React.createElement('rect', { key: 'g2', x: 132, y: 50, width: 4, height: 4, fill: '#888' })
+                        ]
+                    ),
+                    showHealAnimation && React.createElement(
+                        'div',
+                        { className: 'absolute inset-0 pointer-events-none' },
+                        [...Array(6)].map((_, i) =>
+                            React.createElement('div', {
+                                key: i,
+                                className: 'absolute w-3 h-3 rounded-full bg-green-400 animate-ping',
+                                style: {
+                                    left: `${50 + Math.cos((i / 6) * Math.PI * 2) * 20}%`,
+                                    top: `${40 + Math.sin((i / 6) * Math.PI * 2) * 20}%`,
+                                    animationDelay: `${i * 0.1}s`,
+                                    animationDuration: '0.8s',
+                                }
+                            })
+                        )
+                    )
                 );
             };
 
@@ -358,7 +342,8 @@
             );
         }
 
-        ReactDOM.render(<PixelWarrior />, document.getElementById('root'));
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(PixelWarrior));
     </script>
 </body>
 </html>
